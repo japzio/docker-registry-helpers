@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(
-  name='docker-imgreplicator-py',
+  name='ecr-image-copy-py',
   version='1.0',
   description='aws ecr docker image cross-region replicator',
   author='Jasper Culong',
