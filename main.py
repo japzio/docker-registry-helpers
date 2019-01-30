@@ -93,14 +93,14 @@ def main():
   parser = argparse.ArgumentParser(description='AWS ECR docker image cross-region replicator.')
 
   parser.add_argument("-s","--source-region", dest="source", help="ecr region where the image should be pulled from.", type=str, required=True)
-  parser.add_argument("-t", "--target-region", dest="target", help="ecr region where the image will be pushed to." ,type=str, required=True)
-  parser.add_argument("-in", "--image-name", dest="image_name", help="docker image name.", type=str, required=True)
-  parser.add_argument("-it", "--image-tag", dest="image_tag", help="docker image tag, default=latest.", default='latest', type=str)
+  parser.add_argument("-d", "--destination-region", dest="destination", help="ecr region where the image will be pushed to." ,type=str, required=True)
+  parser.add_argument("-n", "--image-name", dest="image_name", help="docker image name.", type=str, required=True)
+  parser.add_argument("-t", "--image-tag", dest="image_tag", help="docker image tag, default=latest.", default='latest', type=str)
 
   args = parser.parse_args()
   
   auth_data_source = get_auth_data(args.source)
-  auth_data_target = get_auth_data(args.target)
+  auth_data_target = get_auth_data(args.destination)
 
   docker_login(auth_data_source.username, auth_data_source.password, auth_data_source.endpoint)
   docker_login(auth_data_target.username, auth_data_target.password, auth_data_target.endpoint)

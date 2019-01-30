@@ -8,7 +8,7 @@ setup(
   description='aws ecr docker image cross-region replicator',
   author='Jasper Culong',
   author_email='jculongit10@yahoo.com',
-  packages=['tests'],  #same as name
+  packages=['tests'],
   install_requires=[
     'boto3',
     'docker',

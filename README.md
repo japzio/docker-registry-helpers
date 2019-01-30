@@ -11,7 +11,7 @@ AWS ECR docker image cross-region replicator
 ### Usage
 
 ~~~
-./main.py -s us-west-2 -t us-east-1 -in image-name -it latest
+./main.py -s us-west-2 -d us-east-1 -n image-name -t latest
 ~~~
 
 ### Parameters
