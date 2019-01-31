@@ -27,11 +27,11 @@ class AuthData:
 
   @property
   def username(self):
-    return base64.b64decode(self.auth_data['authorizationToken']).decode(self.encoding).split(':')[0]
+    return self.base64_decode(self, self.auth_data['authorizationToken']).split(':')[0]
   
   @property
   def password(self):
-    return base64.b64decode(self.auth_data['authorizationToken']).decode(self.encoding).split(':')[1]
+    return self.base64_decode(self, self.auth_data['authorizationToken']).split(':')[1]
   
   @property
   def endpoint(self):
@@ -45,8 +45,12 @@ class AuthData:
   def expiry(self):
     return dict(expiry=self.auth_data['expiresAt'].strftime('%s'))
 
-  def get_repository(self, imag_name):
-    return self.repo_prefix + imag_name
+  @staticmethod
+  def base64_decode(self, string_b64):
+    return str(base64.b64decode(string_b64).decode(self.encoding))
+    
+  def get_repository(self, image_name):
+    return self.repo_prefix + image_name
 
 
 def get_auth_data(aws_region):
@@ -92,10 +96,10 @@ def main():
   
   parser = argparse.ArgumentParser(description='AWS ECR docker image cross-region replicator.')
 
-  parser.add_argument("-s","--source-region", dest="source", help="ecr region where the image should be pulled from.", type=str, required=True)
+  parser.add_argument("-s", "--source-region", dest="source", help="ecr region where the image should be pulled from.", type=str, required=True)
   parser.add_argument("-d", "--destination-region", dest="destination", help="ecr region where the image will be pushed to." ,type=str, required=True)
   parser.add_argument("-n", "--image-name", dest="image_name", help="docker image name.", type=str, required=True)
-  parser.add_argument("-t", "--image-tag", dest="image_tag", help="docker image tag, default=latest.", default='latest', type=str)
+  parser.add_argument("-t", "--image-tag", dest="image_tag", help="docker image tag default=latest.", default='latest', type=str)
 
   args = parser.parse_args()
   
