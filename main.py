@@ -95,10 +95,12 @@ def push_image(name, username, password, tag='latest'):
   auth_config = {'username': username, 'password': password }
   try:
     for stream in docker_client.images.push(name, auth_config=auth_config, stream=True, decode=True):
-      if ('errorDetail' in stream):
+      if ('status' in stream):
+        logger.debug(stream['status'])
+      elif ('errorDetail' in stream):
         raise docker.errors.APIError(stream['errorDetail']['message'])
       else:
-        logger.debug(stream)
+        print(json.dumps(stream['aux'], indent=2, sort_keys=True))
   except (docker.errors.DockerException, docker.errors.APIError) as err:
    logger.error(err)
    sys.exit(4)
