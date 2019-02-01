@@ -98,7 +98,7 @@ def push_image(name, username, password, tag='latest'):
       if ('errorDetail' in stream):
         raise docker.errors.APIError(stream['errorDetail']['message'])
       else:
-        logger.debug(stream['status'])
+        logger.debug(stream)
   except (docker.errors.DockerException, docker.errors.APIError) as err:
    logger.error(err)
    sys.exit(4)
