@@ -96,7 +96,7 @@ def push_image(name, username, password, tag='latest'):
   try:
     for stream in docker_client.images.push(name, auth_config=auth_config, stream=True, decode=True):
       if ('errorDetail' in stream):
-        raise docker.errors.APIError(stream['errorDetail'])
+        raise docker.errors.APIError(stream['errorDetail']['message'])
       else:
         logger.debug(stream['status'])
   except (docker.errors.DockerException, docker.errors.APIError) as err:
