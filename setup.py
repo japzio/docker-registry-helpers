@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='ECR Image Copy',
-    version='0.1.0',
+    version='1.0',
     author='Jasper Culong',
     author_email='jasper.culong@truste.com',
     packages=['tests'],
