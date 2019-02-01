@@ -6,7 +6,7 @@ AWS ECR docker image cross-region replicator
 
 * python3 and pip3
 * boto3
-* docker
+* docker-py
 
 ### Usage
 
