@@ -8,6 +8,7 @@ import json
 import argparse
 import datetime
 import sys
+import io
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d,%H:%M:%S')
 logger = logging.getLogger(__name__)
@@ -91,9 +92,12 @@ def tag_image(current_tag, target_tag):
 def push_image(name, username, password, tag='latest'):
   auth_config = {'username': username, 'password': password }
   try:
-    docker_client.images.push(name, auth_config=auth_config)
-  except (APIError, TLSParameterError) as err:
+    for stream in docker_client.images.push(name, auth_config=auth_config, stream=True, decode=True):
+      if ('errorDetail' in stream):
+        raise docker.errors.APIError(stream['errorDetail'])
+  except (docker.errors.DockerException, docker.errors.APIError) as err:
    logger.error(err)
+   sys.exit(4)
 
 
 def main():
