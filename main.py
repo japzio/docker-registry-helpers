@@ -82,8 +82,10 @@ def pull_image(name, username, password, tag='latest'):
 
 def tag_image(current_tag, target_tag):
   try:
-   image = docker_client.images.get(current_tag)
-   image.tag(target_tag)
+    image = docker_client.images.get(current_tag)
+    is_successful = image.tag(target_tag)
+    if is_successful:
+      logger.info('tagging %s with %s successful!', current_tag, target_tag)
   except (docker.errors.APIError) as err:
    logger.error(err)
    sys.exit(3)
