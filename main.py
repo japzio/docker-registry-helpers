@@ -7,6 +7,7 @@ import docker
 import json
 import argparse
 import datetime
+import sys
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d,%H:%M:%S')
 logger = logging.getLogger(__name__)
@@ -66,6 +67,7 @@ def docker_login(username, password, registry):
     logger.info('login successful to ' + registry)
   except (docker.errors.APIError, docker.errors.TLSParameterError) as err:
     logger.error(err)
+    sys.exit(1)
 
 
 def pull_image(name, username, password, tag='latest'):
@@ -74,6 +76,7 @@ def pull_image(name, username, password, tag='latest'):
    docker_client.images.pull(name, auth_config=auth_config)
   except (docker.errors.APIError) as err:
    logger.error(err)
+   sys.exit(2)
 
 
 def tag_image(current_tag, target_tag):
@@ -82,6 +85,7 @@ def tag_image(current_tag, target_tag):
    image.tag(target_tag)
   except (docker.errors.APIError) as err:
    logger.error(err)
+   sys.exit(3)
 
 
 def push_image(name, username, password, tag='latest'):

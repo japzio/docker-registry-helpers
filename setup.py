@@ -13,6 +13,6 @@ setup(
     long_description=open('README.md').read(),
     install_requires=[
         "docker >= 3.7.0",
-        "boto3 >= 1.7.57 ",
+        "boto3 >= 1.7.57",
     ],
 )
