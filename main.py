@@ -119,10 +119,9 @@ def main():
 
   parser.add_argument("-s", "--source-region", dest="source", help="ecr region where the image should be pulled from.", type=str, required=True)
   parser.add_argument("-d", "--destination-region", dest="destination", help="ecr region where the image will be pushed to." ,type=str, required=True)
-  parser.add_argument("-r", "--repository", dest="repository", help="ecr image:tag format", type=str, required=True)
-  parser.add_argument("-n", "--image-name", dest="image_name", help="destination ecr repository name. Only applies for custom repository name other than the source", type=str, required=False)
-  parser.add_argument("-t", "--image-tag", dest="image_tag", help="destination ecr repository tag. Only applies for custom repository tag other than the source", type=str, required=False, default='latest')
-
+  parser.add_argument("-n", "--image-name", dest="image_name", help="ecr image:tag format", type=str, required=True)
+  parser.add_argument("-t", "--image-tag", dest="image_tag", help="ecr image:tag format", type=str, required=True)
+  
   args = parser.parse_args()
   
   auth_data_source = get_auth_data(args.source)
