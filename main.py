@@ -71,10 +71,11 @@ def docker_login(username, password, registry):
     sys.exit(1)
 
 
-def pull_image(name, username, password, tag='latest'):
-  auth_config = {'username': username, 'password': password }
+def pull_image(auth_data, image):
+
+  auth_config = {'username': auth_data.username, 'password': auth_data.password }
   try:
-   docker_client.images.pull(name, auth_config=auth_config)
+   docker_client.images.pull(auth_data.get_repository(image), auth_config=auth_config)
   except (docker.errors.APIError) as err:
    logger.error(err)
    sys.exit(2)
@@ -91,7 +92,7 @@ def tag_image(current_tag, target_tag):
    sys.exit(3)
 
 
-def push_image(name, username, password, tag='latest'):
+def push_image(name, username, password):
   auth_config = {'username': username, 'password': password }
   try:
     for stream in docker_client.images.push(name, auth_config=auth_config, stream=True, decode=True):
@@ -123,11 +124,13 @@ def main():
   docker_login(auth_data_source.username, auth_data_source.password, auth_data_source.endpoint)
   docker_login(auth_data_target.username, auth_data_target.password, auth_data_target.endpoint)
 
-  image = args.image_name + ':' + args.image_tag
+  image_name        = args.image_name + ':' + args.image_tag
 
-  pull_image(auth_data_source.get_repository(image), auth_data_source.username, auth_data_source.password, tag=args.image_tag)
-  tag_image(auth_data_source.get_repository(image) ,  auth_data_target.get_repository(image))
-  push_image(auth_data_target.get_repository(image), auth_data_target.username, auth_data_target.password, tag=args.image_tag)
+  pull_image(auth_data_source, image_name)
+
+  tag_image(auth_data_source.get_repository(image_name),  auth_data_target.get_repository(image_name))
+
+  push_image(auth_data_target.get_repository(image_name), auth_data_target.username, auth_data_target.password)
 
 
 if __name__== "__main__":  
