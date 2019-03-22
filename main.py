@@ -40,8 +40,8 @@ class AuthData:
     return self.auth_data['proxyEndpoint']
   
   @property
-  def repo_prefix(self):
-    return self.auth_data['proxyEndpoint'].split('//')[1] + '/'
+  def registry(self):
+    return self.auth_data['proxyEndpoint'].split('//')[1]
 
   @property
   def expiry(self):
@@ -51,8 +51,8 @@ class AuthData:
   def base64_decode(self, string_b64):
     return str(base64.b64decode(string_b64).decode(self.encoding))
     
-  def get_repository(self, image_name):
-    return self.repo_prefix + image_name
+  def ecr_fqdn(self, image_name):
+    return self.registry + '/' + image_name
 
 
 def get_auth_data(aws_region):
@@ -71,10 +71,17 @@ def docker_login(username, password, registry):
     sys.exit(1)
 
 
-def pull_image(name, username, password, tag='latest'):
-  auth_config = {'username': username, 'password': password }
+def pull_image(auth_data, repository):
+
+  auth_config = {'username': auth_data.username, 'password': auth_data.password }
   try:
-   docker_client.images.pull(name, auth_config=auth_config)
+   for stream in docker_client.pull(auth_data.ecr_fqdn(repository), auth_config=auth_config, stream=True, decode=True):
+      if ('status' in stream):
+        logger.debug(stream['status'])
+      elif ('errorDetail' in stream):
+        raise docker.errors.APIError(stream['errorDetail']['message'])
+      else:
+        print(json.dumps(stream['aux'], indent=2, sort_keys=True))
   except (docker.errors.APIError) as err:
    logger.error(err)
    sys.exit(2)
@@ -82,8 +89,8 @@ def pull_image(name, username, password, tag='latest'):
 
 def tag_image(current_tag, target_tag):
   try:
-    image = docker_client.images.get(current_tag)
-    is_successful = image.tag(target_tag)
+    #image = docker_client.images.get(current_tag)
+    is_successful = docker_client.tag(current_tag, target_tag)
     if is_successful:
       logger.info('tagging %s with %s successful!', current_tag, target_tag)
   except (docker.errors.APIError) as err:
@@ -91,10 +98,10 @@ def tag_image(current_tag, target_tag):
    sys.exit(3)
 
 
-def push_image(name, username, password, tag='latest'):
-  auth_config = {'username': username, 'password': password }
+def push_image(auth_data, repository):
+  auth_config = {'username': auth_data.username, 'password': auth_data.password }
   try:
-    for stream in docker_client.images.push(name, auth_config=auth_config, stream=True, decode=True):
+    for stream in docker_client.push(auth_data.ecr_fqdn(repository), auth_config=auth_config, stream=True, decode=True):
       if ('status' in stream):
         logger.debug(stream['status'])
       elif ('errorDetail' in stream):
@@ -112,9 +119,9 @@ def main():
 
   parser.add_argument("-s", "--source-region", dest="source", help="ecr region where the image should be pulled from.", type=str, required=True)
   parser.add_argument("-d", "--destination-region", dest="destination", help="ecr region where the image will be pushed to." ,type=str, required=True)
-  parser.add_argument("-n", "--image-name", dest="image_name", help="docker image name.", type=str, required=True)
-  parser.add_argument("-t", "--image-tag", dest="image_tag", help="docker image tag default=latest.", default='latest', type=str)
-
+  parser.add_argument("-n", "--image-name", dest="image_name", help="ecr image:tag format", type=str, required=True)
+  parser.add_argument("-t", "--image-tag", dest="image_tag", help="ecr image:tag format", type=str, required=True)
+  
   args = parser.parse_args()
   
   auth_data_source = get_auth_data(args.source)
@@ -123,11 +130,13 @@ def main():
   docker_login(auth_data_source.username, auth_data_source.password, auth_data_source.endpoint)
   docker_login(auth_data_target.username, auth_data_target.password, auth_data_target.endpoint)
 
-  image = args.image_name + ':' + args.image_tag
+  image_name        = args.image_name + ':' + args.image_tag
 
-  pull_image(auth_data_source.get_repository(image), auth_data_source.username, auth_data_source.password, tag=args.image_tag)
-  tag_image(auth_data_source.get_repository(image) ,  auth_data_target.get_repository(image))
-  push_image(auth_data_target.get_repository(image), auth_data_target.username, auth_data_target.password, tag=args.image_tag)
+  pull_image(auth_data_source, image_name)
+
+  tag_image(auth_data_source.ecr_fqdn(image_name),  auth_data_target.ecr_fqdn(image_name))
+
+  push_image(auth_data_target, image_name)
 
 
 if __name__== "__main__":  
