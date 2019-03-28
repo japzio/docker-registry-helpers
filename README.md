@@ -5,27 +5,27 @@ AWS ECR docker image cross-region replicator
 ## Requirements
 
 * python3
+
+## Dependencies
+
 * boto3
-* docker-py
+* docker
 
-### Installation 
+## Installation 
 
-~~~
-pip3 install ecr2ecr==1.2
-~~~
+pip3 install ecr2ecr
 
-### Usage
+## Usage
 
-~~~
 ecr2ecr -s us-west-2 -d us-east-1 -n image-name -t latest
-~~~
 
-### Arguments
 
-*  -s SOURCE      --source-region      ecr region where the image should be pulled from.
-*  -d DESTINATION --destination-region ecr region where the image will be pushed to.
-*  -n IMAGE_NAME  --image-name         ecr image:tag format
-*  -t IMAGE_TAG   --image-tag          ecr image:tag format
+## Arguments
+
+* -s --source-region      region where the image should be pulled from.
+* -d --destination-region region where the image will be pushed to.
+* -n --image-name         image:tag format
+* -t --image-tag          image:tag format
 
 ## Author
 

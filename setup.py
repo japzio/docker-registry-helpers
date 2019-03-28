@@ -4,12 +4,12 @@ from setuptools import setup, find_packages
 
 setup(
     name='ecr2ecr',
-    version='1.2',
+    version='1.6',
     author='Jasper Culong',
     author_email='jculongit10@yahoo.com',
     packages=find_packages(),
     license='LICENSE.txt',
-    description='Useful towel-related stuff.',
+    description='AWS ECR docker image cross-region replicator',
     long_description=open('README.md').read(),
     url="https://pypi.org/project/ecr2ecr",
     entry_points={
