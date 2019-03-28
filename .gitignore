@@ -1,3 +1,6 @@
 .tox/
 .vscode/
+dist/
+build/
+ecr2ecr.egg-info/
 MANIFEST
