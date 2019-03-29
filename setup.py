@@ -8,7 +8,7 @@ setup(
     author='Jasper Culong',
     author_email='jculongit10@yahoo.com',
     packages=find_packages(),
-    license='LICENSE.txt',
+    license='LICENSE',
     description='AWS ECR docker image cross-region replicator',
     long_description=open('README.md').read(),
     url="https://pypi.org/project/ecr2ecr",
@@ -20,6 +20,7 @@ setup(
     install_requires=[
         "docker-py <= 1.10.6",
         "boto3 >= 1.7.57",
-        "twine == 1.13.0"
+        "twine == 1.13.0",
+        "unittest2"
     ],
 )
