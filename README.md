@@ -9,7 +9,11 @@ AWS ECR docker image cross-region replicator
 ## Dependencies
 
 * boto3
-* docker
+* docker-py (1.X)
+
+## Creat Dists
+
+./setup.py sdist --formats=gztar,zip
 
 ## Installation 
 

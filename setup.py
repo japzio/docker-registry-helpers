@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ecr2ecr',
-    version='1.6',
+    version='1.9',
     author='Jasper Culong',
     author_email='jculongit10@yahoo.com',
     packages=find_packages(),
@@ -18,7 +18,8 @@ setup(
         ]
     },
     install_requires=[
-        "docker >= 3.7.0",
+        "docker-py <= 1.10.6",
         "boto3 >= 1.7.57",
+        "twine == 1.13.0"
     ],
 )

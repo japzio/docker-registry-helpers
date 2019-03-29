@@ -3,4 +3,5 @@
 dist/
 build/
 ecr2ecr.egg-info/
+**/__pycache__/*
 MANIFEST
