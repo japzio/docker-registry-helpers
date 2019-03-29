@@ -1,6 +1,6 @@
 ## Project
 
-AWS ECR docker image cross-region replicator
+docker image registry sync tools. Currently supports aws ecr
 
 ## Requirements
 
@@ -24,10 +24,13 @@ twine upload (--skip-existing) dist/ecr2ecr-VERSION.tar.gz or zip
 
 pip3 install ecr2ecr
 
-## Usage
+## Usage as installed
 
 ecr2ecr -s us-west-2 -d us-east-1 -n image-name -t latest
 
+## Usage as src
+
+python3 -m ecr2ecr.core -s us-west-2 -d us-east-1 -n image-name -t latest
 
 ## Arguments
 
