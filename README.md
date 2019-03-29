@@ -10,10 +10,15 @@ AWS ECR docker image cross-region replicator
 
 * boto3
 * docker-py (1.X)
+* twine 
 
 ## Creat Dists
 
 ./setup.py sdist --formats=gztar,zip
+
+## Upload to PiPy
+
+twine upload (--skip-existing) dist/ecr2ecr-VERSION.tar.gz or zip
 
 ## Installation 
 
