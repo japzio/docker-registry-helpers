@@ -10,6 +10,7 @@ import datetime
 import sys
 import io
 
+
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d,%H:%M:%S')
 logger = logging.getLogger(__name__)
 
@@ -130,11 +131,11 @@ def main():
   docker_login(auth_data_source.username, auth_data_source.password, auth_data_source.endpoint)
   docker_login(auth_data_target.username, auth_data_target.password, auth_data_target.endpoint)
 
-  image_name        = args.image_name + ':' + args.image_tag
+  image_name = args.image_name + ':' + args.image_tag
 
   pull_image(auth_data_source, image_name)
 
-  tag_image(auth_data_source.ecr_fqdn(image_name),  auth_data_target.ecr_fqdn(image_name))
+  tag_image(auth_data_source.ecr_fqdn(image_name), auth_data_target.ecr_fqdn(image_name))
 
   push_image(auth_data_target, image_name)
 
