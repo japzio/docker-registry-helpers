@@ -19,7 +19,9 @@ docker_client = docker.from_env()
 
 
 class AuthData:
-
+  """
+  Object to represent aws ecr authentication datas
+  """
   encoding = 'UTF-8'
 
   def __init__(self, auth_data):
@@ -57,12 +59,33 @@ class AuthData:
 
 
 def get_auth_data(aws_region):
+  """
+  Get authentication data from specified aws ecr region.
+  Parameters
+  __________
+  aws_region: str
+    AWS Region to authenticate to
+  Returns
+  _______
+  AuthData - authentication data representation
+  """
   logger.info('fetching ecr creds from ' + aws_region)
   ecr_client = boto3.client('ecr', region_name=aws_region)
   return AuthData(ecr_client.get_authorization_token()['authorizationData'])
 
 
 def docker_login(username, password, registry):
+  """
+  Performs docker login to a specified ecr region.
+  Parameters
+  __________
+  username: str
+    Docker registry username
+  password: str
+    Docker registry password
+  registry: AuthData.registry
+    AWS Region to authenticate to.
+  """
   try:
     logger.info('logging in to ' + registry)
     response = docker_client.login(username=username, password=password, registry=registry, dockercfg_path='$HOME/.docker/config.json')
@@ -73,7 +96,15 @@ def docker_login(username, password, registry):
 
 
 def pull_image(auth_data, repository):
-
+  """
+  Performs pulling if images from aws ecr
+  Parameters
+  __________
+  auth_data: AuthData
+    Docker registry username
+  repository: str
+    Docker image repository
+  """
   auth_config = {'username': auth_data.username, 'password': auth_data.password }
   try:
    for stream in docker_client.pull(auth_data.ecr_fqdn(repository), auth_config=auth_config, stream=True, decode=True):
@@ -89,6 +120,15 @@ def pull_image(auth_data, repository):
 
 
 def tag_image(current_tag, target_tag):
+  """
+  Performs pulling if images from aws ecr
+  Parameters
+  __________
+  current_tag: str
+    Docker image tag on current local docker registry.
+  target_tag: str
+    New image tag to be added.
+  """
   try:
     #image = docker_client.images.get(current_tag)
     is_successful = docker_client.tag(current_tag, target_tag)
@@ -100,6 +140,15 @@ def tag_image(current_tag, target_tag):
 
 
 def push_image(auth_data, repository):
+  """
+  Performs pushing if images to aws ecr
+  Parameters
+  __________
+  auth_data: AuthData
+    Docker registry username
+  repository: str
+    Docker image repository
+  """
   auth_config = {'username': auth_data.username, 'password': auth_data.password }
   try:
     for stream in docker_client.push(auth_data.ecr_fqdn(repository), auth_config=auth_config, stream=True, decode=True):
