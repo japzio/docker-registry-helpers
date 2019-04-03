@@ -9,7 +9,7 @@ class AuthDataProps_Tests(unittest.TestCase):
       {
           "authorizationToken": "*",
           "expiresAt": 1554234159.187,
-          "proxyEndpoint": "https://565284218568.dkr.ecr.us-west-2.amazonaws.com"
+          "proxyEndpoint": "https://565289216568.dkr.ecr.us-west-2.amazonaws.com"
       }
   ])
 
