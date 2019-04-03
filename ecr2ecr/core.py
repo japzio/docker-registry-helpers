@@ -15,9 +15,6 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(leve
 logger = logging.getLogger(__name__)
 
 
-docker_client = docker.from_env()
-
-
 class AuthData:
   """
   Object to represent aws ecr authentication datas
@@ -86,6 +83,7 @@ def docker_login(username, password, registry):
   registry: AuthData.registry
     AWS Region to authenticate to.
   """
+  docker_client = docker.from_env()
   try:
     logger.info('logging in to ' + registry)
     response = docker_client.login(username=username, password=password, registry=registry, dockercfg_path='$HOME/.docker/config.json')
@@ -105,15 +103,15 @@ def pull_image(auth_data, repository):
   repository: str
     Docker image repository
   """
+  docker_client = docker.from_env()
   auth_config = {'username': auth_data.username, 'password': auth_data.password }
   try:
    for stream in docker_client.pull(auth_data.ecr_fqdn(repository), auth_config=auth_config, stream=True, decode=True):
-      if ('status' in stream):
-        logger.debug(stream['status'])
-      elif ('errorDetail' in stream):
-        raise docker.errors.APIError(stream['errorDetail']['message'])
-      else:
-        print(json.dumps(stream['aux'], indent=2, sort_keys=True))
+      response = stream
+      if ( 'status' in response):
+        logger.debug(response['status'])
+      elif ( 'errorDetail' in response):
+        raise Exception(response['errorDetail']['message'])
   except (docker.errors.APIError) as err:
    logger.error(err)
    sys.exit(2)
@@ -129,6 +127,7 @@ def tag_image(current_tag, target_tag):
   target_tag: str
     New image tag to be added.
   """
+  docker_client = docker.from_env()
   try:
     #image = docker_client.images.get(current_tag)
     is_successful = docker_client.tag(current_tag, target_tag)
@@ -149,18 +148,18 @@ def push_image(auth_data, repository):
   repository: str
     Docker image repository
   """
+  docker_client = docker.from_env()
   auth_config = {'username': auth_data.username, 'password': auth_data.password }
   try:
     for stream in docker_client.push(auth_data.ecr_fqdn(repository), auth_config=auth_config, stream=True, decode=True):
-      if ('status' in stream):
-        logger.debug(stream['status'])
-      elif ('errorDetail' in stream):
-        raise docker.errors.APIError(stream['errorDetail']['message'])
-      else:
-        print(json.dumps(stream['aux'], indent=2, sort_keys=True))
-  except (docker.errors.DockerException, docker.errors.APIError) as err:
-   logger.error(err)
-   sys.exit(4)
+      response = stream
+      if ( 'status' in response):
+        logger.debug(response['status'])
+      elif ( 'errorDetail' in response):
+        raise Exception(response['errorDetail']['message'])
+  except (docker.errors.APIError, docker.errors.DockerException, Exception) as err:
+    logger.error(err)
+    sys.exit(4)
 
 
 def main():
