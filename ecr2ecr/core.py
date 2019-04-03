@@ -111,7 +111,7 @@ def pull_image(auth_data, repository):
       if ( 'status' in response):
         logger.debug(response['status'])
       elif ( 'errorDetail' in response):
-        raise Exception(response['errorDetail']['message'])
+        raise Exception(response['errorDetail']['message'], auth_data.registry)
   except (docker.errors.APIError) as err:
    logger.error(err)
    sys.exit(2)
@@ -156,7 +156,7 @@ def push_image(auth_data, repository):
       if ( 'status' in response):
         logger.debug(response['status'])
       elif ( 'errorDetail' in response):
-        raise Exception(response['errorDetail']['message'])
+        raise Exception(response['errorDetail']['message'], auth_data.registry)
   except (docker.errors.APIError, docker.errors.DockerException, Exception) as err:
     logger.error(err)
     sys.exit(4)
