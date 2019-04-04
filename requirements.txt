@@ -1,3 +1,4 @@
 docker-py<=1.10.6
 boto3>=1.7.57
-twine==1.13.0   
+twine==1.13.0
+unittest2
