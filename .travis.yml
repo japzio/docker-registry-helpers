@@ -1,0 +1,21 @@
+before_install:
+  - sudo apt-get -y update
+  - sudo apt install -y python3-pip
+
+dist: xenial
+
+language: python
+
+python:
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
+install: 
+  - pip3 install -r requirements.txt
+
+script:
+  - python3 -m tests.test_ecr2ecr
+
+  
