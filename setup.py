@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ecr2ecr',
-    version='1.15',
+    version='1.17',
     author='Jasper Culong',
     author_email='jculongit10@yahoo.com',
     packages=find_packages(),

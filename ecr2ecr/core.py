@@ -129,11 +129,13 @@ def tag_image(current_tag, target_tag):
   """
   docker_client = docker.from_env()
   try:
+    if ( current_tag ==  target_tag ):
+      raise Exception('Tagging {} with {} does not make any sense!'.format(current_tag, target_tag))
     #image = docker_client.images.get(current_tag)
     is_successful = docker_client.tag(current_tag, target_tag)
     if is_successful:
-      logger.info('tagging %s with %s successful!', current_tag, target_tag)
-  except (docker.errors.APIError) as err:
+      logger.info('tagging {} with {} successful!'.format(current_tag, target_tag))
+  except (docker.errors.APIError, Exception) as err:
    logger.error(err)
    sys.exit(3)
 
