@@ -9,6 +9,7 @@ docker image registry sync tools. Currently supports aws ecr
 ## Requirements
 
 * python3
+* docker
 
 ## Dependencies
 
@@ -31,6 +32,13 @@ pip3 install ecr2ecr
 ## Usage as installed
 
 ecr2ecr -s us-west-2 -d us-east-1 -n image-name -t latest
+
+## Exit Codes
+
+* 1 - registry login issue
+* 2 - image pulling issue
+* 3 - image tagging issue
+* 4 - image pushing issue to registry
 
 ## Usage as src
 
