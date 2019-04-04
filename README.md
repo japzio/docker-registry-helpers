@@ -2,6 +2,10 @@
 
 docker image registry sync tools. Currently supports aws ecr
 
+## Status
+
+[![Build Status](https://travis-ci.org/japzio/docker-img-sync-tools.svg?branch=develop)](https://travis-ci.org/japzio/docker-img-sync-tools)
+
 ## Requirements
 
 * python3
