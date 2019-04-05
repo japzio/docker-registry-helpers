@@ -4,9 +4,9 @@ docker image registry sync tools. Currently supports aws ecr
 
 ## Status
 
-[![Build Status](https://travis-ci.org/japzio/docker-img-sync-tools.svg?branch=develop)](https://travis-ci.org/japzio/docker-img-sync-tools)
+[![Build Status](https://travis-ci.org/japzio/docker-helper-tools.svg?branch=develop)](https://travis-ci.org/japzio/docker-helper-tools)
 
-## Requirements
+## Runtime Requirements
 
 * python3
 * docker
@@ -15,6 +15,9 @@ docker image registry sync tools. Currently supports aws ecr
 
 * boto3
 * docker-py (1.X)
+
+
+## PyPi Upload Utility(ies)
 * twine 
 
 ## Creat Dists
@@ -31,20 +34,21 @@ pip3 install ecr2ecr
 
 ## Usage as installed
 
-ecr2ecr -s us-west-2 -d us-east-1 -n image-name -t latest
+ecr2ecr -s us-west-2 -d us-east-1 -n image-name(repository) -t latest
 
 ## Exit Codes
 
 * 1 - registry login issue
 * 2 - image pulling issue
 * 3 - image tagging issue
-* 4 - image pushing issue to registry
+* 4 - image pushing issue 
 
 ## Usage as src
 
 python3 -m ecr2ecr.core -s us-west-2 -d us-east-1 -n image-name -t latest
 
 ## Arguments
+
 
 * -s --source-region      region where the image should be pulled from.
 * -d --destination-region region where the image will be pushed to.
