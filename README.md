@@ -1,24 +1,59 @@
 ## Project
 
-AWS ECR docker image cross-region replicator
+docker image registry sync tools. Currently supports aws ecr
 
-## Requirements
+## Status
 
-* python3 and pip3
-* boto3
+[![Build Status](https://travis-ci.org/japzio/docker-helper-tools.svg?branch=develop)](https://travis-ci.org/japzio/docker-helper-tools)
+
+## Runtime Requirements
+
+* python3
 * docker
 
-### Usage
+## Dependencies
 
-~~~
-./main.py -s us-west-2 -t us-east-1 -in image-name -it latest
-~~~
+* boto3
+* docker-py (1.X)
 
-### Parameters
 
-~~~
-./main.py --help
-~~~
+## PyPi Upload Utility(ies)
+* twine 
+
+## Creat Dists
+
+./setup.py sdist --formats=gztar,zip
+
+## Upload to PiPy
+
+twine upload (--skip-existing) dist/ecr2ecr-VERSION.tar.gz or zip
+
+## Installation 
+
+pip3 install ecr2ecr
+
+## Usage as installed
+
+ecr2ecr -s us-west-2 -d us-east-1 -n image-name(repository) -t latest
+
+## Exit Codes
+
+* 1 - registry login issue
+* 2 - image pulling issue
+* 3 - image tagging issue
+* 4 - image pushing issue 
+
+## Usage as src
+
+python3 -m ecr2ecr.core -s us-west-2 -d us-east-1 -n image-name -t latest
+
+## Arguments
+
+
+* -s --source-region      region where the image should be pulled from.
+* -d --destination-region region where the image will be pushed to.
+* -n --image-name         image:tag format
+* -t --image-tag          image:tag format
 
 ## Author
 

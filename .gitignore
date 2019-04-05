@@ -1,0 +1,8 @@
+.tox/
+.vscode/
+dist/
+build/
+ecr2ecr.egg-info/
+**/__pycache__/*
+**/*.pyc
+MANIFEST
