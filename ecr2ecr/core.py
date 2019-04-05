@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 class AuthData:
   """
-  Object to represent aws ecr authentication datas
+  Object to represent aws ecr authentication data and resusable properties
   """
   encoding = 'UTF-8'
 
