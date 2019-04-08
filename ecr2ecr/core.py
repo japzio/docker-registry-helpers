@@ -11,7 +11,6 @@ import sys
 import io
 
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d,%H:%M:%S')
 logger = logging.getLogger(__name__)
 
 
@@ -109,7 +108,7 @@ def pull_image(auth_data, repository):
    for stream in docker_client.pull(auth_data.ecr_fqdn(repository), auth_config=auth_config, stream=True, decode=True):
       response = stream
       if ( 'status' in response):
-        logger.debug(response['status'])
+        logger.info(response['status'])
       elif ( 'errorDetail' in response):
         raise Exception(response['errorDetail']['message'], auth_data.registry)
   except (docker.errors.APIError) as err:
@@ -156,7 +155,7 @@ def push_image(auth_data, repository):
     for stream in docker_client.push(auth_data.ecr_fqdn(repository), auth_config=auth_config, stream=True, decode=True):
       response = stream
       if ( 'status' in response):
-        logger.debug(response['status'])
+        logger.info(response['status'])
       elif ( 'errorDetail' in response):
         raise Exception(response['errorDetail']['message'], auth_data.registry)
   except (docker.errors.APIError, docker.errors.DockerException, Exception) as err:
@@ -169,14 +168,17 @@ def main():
   parser = argparse.ArgumentParser(description='AWS ECR docker image cross-region replicator.')
 
   parser.add_argument("-s", "--source-region", dest="source", help="ecr region where the image should be pulled from.", type=str, required=True)
-  parser.add_argument("-d", "--destination-region", dest="destination", help="ecr region where the image will be pushed to." ,type=str, required=True)
+  parser.add_argument("-d", "--dest-region", dest="dest", help="ecr region where the image will be pushed to." ,type=str, required=True)
   parser.add_argument("-n", "--image-name", dest="image_name", help="ecr image:tag format", type=str, required=True)
   parser.add_argument("-t", "--image-tag", dest="image_tag", help="ecr image:tag format", type=str, required=True)
+  parser.add_argument("-v", "--verbose", dest="verbose", help="log verbosity", action='store_true')
   
   args = parser.parse_args()
   
+  logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d,%H:%M:%S.%f')
+
   auth_data_source = get_auth_data(args.source)
-  auth_data_target = get_auth_data(args.destination)
+  auth_data_target = get_auth_data(args.dest)
 
   docker_login(auth_data_source.username, auth_data_source.password, auth_data_source.endpoint)
   docker_login(auth_data_target.username, auth_data_target.password, auth_data_target.endpoint)
