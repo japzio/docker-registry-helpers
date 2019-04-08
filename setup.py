@@ -3,12 +3,9 @@
 from setuptools import setup, find_packages
 import os
 
-with open('{}/{}'.format(os.path.abspath('.'),'VERSION'), 'r') as version_file:
-  VERSION = version_file.read().strip()
-
 setup(
   name='ecr2ecr',
-  version=VERSION,
+  version='1.23',
   author='Jasper Culong',
   author_email='jculongit10@yahoo.com',
   packages=find_packages(),
