@@ -175,7 +175,7 @@ def main():
   
   args = parser.parse_args()
   
-  logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d,%H:%M:%S.%f')
+  logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO, format='%(asctime)s.%(msecs)03d - %(name)s - %(module)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d,%H:%M:%S')
 
   auth_data_source = get_auth_data(args.source)
   auth_data_target = get_auth_data(args.dest)

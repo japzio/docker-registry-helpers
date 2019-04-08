@@ -5,7 +5,7 @@ import os
 
 setup(
   name='ecr2ecr',
-  version='1.23',
+  version='1.24',
   author='Jasper Culong',
   author_email='jculongit10@yahoo.com',
   packages=find_packages(),
