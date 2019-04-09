@@ -173,8 +173,8 @@ def logger_config(level=logging.INFO):
   """
   logging.basicConfig(
     level=level, 
-    format='%(asctime)s.%(msecs)03d - %(name)s - %(module)s - %(levelname)s - %(message)s', 
-    datefmt='%Y-%m-%d,%H:%M:%S'
+    format='%(asctime)s.%(msecs)d - %(name)s - %(module)s - %(levelname)s - %(message)s', 
+    datefmt='%Y-%m-%dT%H:%M:%S%Z'
   )
 
 
