@@ -15,6 +15,6 @@ install:
   - pip3 install -r requirements.txt
 
 script:
-  - python3 -m tests.test_ecr2ecr
+  - python3 -m unittest -q tests.test_ecr2ecr.AuthDataProps_Tests
 
   

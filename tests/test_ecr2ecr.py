@@ -5,35 +5,25 @@ from ecr2ecr.core import AuthData
 
 class AuthDataProps_Tests(unittest.TestCase):
 
-  auth_data =  AuthData([
+  @classmethod
+  def setUpClass(cls):
+    cls.auth_data = AuthData([
       {
-          "authorizationToken": "*",
+          "authorizationToken": "QVdTOmV5SndZWGxzYjJGa0lqb2llbUk0TlVNNVpGTnJXRzFFWTA1S0x5OUZVMWxUZGsxNU4zbFplbkUzZVZBMUsyNHdaVkJMU0ZZNVJXTjZkbXh3VEVwc2FYZGtNWGNyUVdSc2FYTlNXazAwTUZkcGJqaFNOVmR4ZUUxTmFsRlNiMFo1TTFKNU4zbENkVzUwTUdkeWQycGxkRVZFUm1OdVlsRXpRMmxzU0c1NVlWbGxaVU15YlRoT2NrZGlhRkZvUWxoRVptcEhNM3BEWlVvd1kwbDNiMVoxY1dneFpUVTNRVVphUkVnemRIbGxXSGxKTUVOWmJVcEZhVU5PY1RZMVUxZDZPRlJEVFhKQ09HcHdXRWN3T0hFM2VUVjRWV1F2UVhSTVJ6RjJZeTl1UmpOYVJFcEpPVWh6T0RoU1FtbEhOR2xRTldSaVEzTmFUMUZFYkhwVVJHUnZORXhKVHk5M2NucDRSRTVaZERReFdFaGlRV1JWWm1GWmNqRXlObk5IY0ZKQlRXY3liM1YyTWxWbll6VlliR0ZEUjNaM1pUSkVSRUV5TldvM1NuWkxjRTF2VlRac2EyOHpOWEphZHpCc1NrcFdhVWxwU0dkTE15OVJOMlJ6YmxSMloyNDFXRkZJTUZKdFJuSnphbGhUU0dwc1ZXeHJPRVpNUTFOM1JESk1UV2RoTkhOblNqRXhTMEkwTkVWWVF6RlBOV0UzZVdoTll6SlZaR0p5WTNjd2RqWkhjM041ZDBweGVXSnllR3BNTTFoMVppOVZSbGRaYzBGQ2RWQXpRVkkwZUc5aFYyTXJNMFY1TUVGV1luRk9ObVpZZEhOdU1sbDRhVXhrUlZkWVMxTlpUblV3UldoQ1ZFVk9kR2RyVURoMFYxQmxjMDVVWm14NVltOXphSE5VVFdnM05VaFFlbXBZTlM5cVdWTmxSSGRCWm1oSVRWVjJjeTl3WW5Od2FIRmtaV0YxV21kdU1YZHNVa1JOV0docFpTOHdNblpWTUdkT1RFaDRlR3MwVkhKVFptcEdjR2hFWkRJeVdVeHFkSFZyZFVobGNFWlFjWGRoV25OUGEwRXpNVTlDVDBoM1FVUkNlRzFxUVhJMVZucG1WamhRVDNvd2IwNWlXbU4xWTJkdmNWcHpUUzlWYWxoTVpHaG9SREZzVldSSk5VRldORkJqZVUxQmEyOVRaelpSTVc5cFJpczRPVEZFWXpkcGNtY3ZabTFRZUVOaFFubFdVRk5FYVZsc1psQlpZVFJEVUhwM01IcDNWbW8xU21wWVNIUjNhVFF4UjNoSmIydGFkMUZGUldkMWVUVXZiRkZQT0Vrd2EyZFVSVWhMYldGb1ZETm1ka2RKUVc1WFVuWkZjM1ppVFhkdFRUbDVhbmxtZDJOc1VYTmFUbk5IYjJOS1dFWXZRa3R0ZG1NeU5HSk1UbE5ZUVRNME9EbEhaVEl5WVdsbE5YZzVkemxyTldGbVlsUXlUemhaZVVFNEswTjRSMmRUVVhnNVFTdFVUeTlzUTBOcmNYaEVSMUpZTVVKTVluSlROSGhHVWxWRFlXZE9Lekp5UnpKd1oxaDBiSGwyUVZRclZHSnNZbWhWVVRCcVZWZEZiMU5SVTFOWmRYWXZUR1JoZVhwSGFWZEJTVVZMUkU5VE4xTm9UbGgxU0daT05qaFpkR05OWmtsYVdsaDFVRTV5UXpkcEwzUnVLMk0zWW5jcmFHOWtNbWxwVG1SNU5VOHpjVVowVlhJMmJFMTVRVkZKWjNNMVFucFBRbEo2UVRFeE5YZGtjR1ZUVTBFek4wSkpkRzlFVUZsNVRtMUNlSGt3YlV0TlZEUk9ZMWRCUTJ0cFJrZzNkSFI1WTBNcmJ6ZzVaR3BKV0dWNlMwSmlOVmhwZWpoR05IZHdSRkJJZUdzMlRHdFpiaXMzZVVGUVExWnNWMmx2UnpKT1dVUklZblZaV0c5amRYUlVTWFZtY1dKaWJtczFPQ3QxVDNSMFdVWlBaRXBzVlV3dk5GbDJiakZyTlVGUFVqaHlaRFJrYTBrMFVVTjNQVDBpTENKa1lYUmhhMlY1SWpvaVFWRkZRa0ZJYWpac1l6UllTVXAzTHpkc2JqQklZekF3UkUxbGF6WkhSWGhJUTJKWk5GSkpjRlJOUTBrMU9FbHVWWGRCUVVGSU5IZG1RVmxLUzI5YVNXaDJZMDVCVVdOSGIwYzRkMkpSU1VKQlJFSnZRbWRyY1docmFVYzVkekJDUW5kRmQwaG5XVXBaU1ZwSlFWZFZSRUpCUlhWTlFrVkZSRTVwVFdSa00wRmlRWFZSYnpORWFFcFJTVUpGU1VFM1VHcHJSa3BQVWtGU2NqazNhakZDUkdaVEwyRTFhRWM0WkVJdlJTOTFVV3RoWjNaclJUSnJlR1pKVHpSMmRtNWxkMWg0TXpWRGNXYzRRVk55UTJkaFVUZFlkSFJaT0hZd09YSXdXalp6Y3owaUxDSjJaWEp6YVc5dUlqb2lNaUlzSW5SNWNHVWlPaUpFUVZSQlgwdEZXU0lzSW1WNGNHbHlZWFJwYjI0aU9qRTFOVFE0TWprek5UWjk=",
           "expiresAt": 1554234159.187,
           "proxyEndpoint": "https://565289216568.dkr.ecr.us-west-2.amazonaws.com"
       }
-  ])
+    ])
 
-  def username_test(self):
-    self.assertEqual(auth_data.username, 'AWS')
-    
-  def password_test():
-    pass
+  def test_username(self):
+    self.assertEqual(self.auth_data.username, 'AWS')
   
-  def endpoint_test():
-    pass
+  def test_endpoint(self):
+    self.assertEqual(self.auth_data.endpoint, "https://565289216568.dkr.ecr.us-west-2.amazonaws.com" )
   
-  def registry():
-    pass
-
-  def expiry_test():
-    pass
-
-  def base64_decode_test():
-    pass
+  def test_registry(self):
+    self.assertEqual(self.auth_data.registry, "565289216568.dkr.ecr.us-west-2.amazonaws.com")
     
-  def ecr_fqdn_test():
-    pass
-
 
 if __name__ == '__main__':
     unittest.main()

@@ -50,6 +50,7 @@ class AuthData:
   def base64_decode(self, string_b64):
     return str(base64.b64decode(string_b64).decode(self.encoding))
     
+  @staticmethod
   def ecr_fqdn(self, image_name):
     return self.registry + '/' + image_name
 
