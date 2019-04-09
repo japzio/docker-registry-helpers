@@ -1,7 +1,6 @@
 before_install:
-  - sudo apt-get -y update
-  - sudo apt install -y python3-pip
-
+  - lsb_release -a
+  
 dist: xenial
 
 language: python
