@@ -163,6 +163,21 @@ def push_image(auth_data, repository):
     sys.exit(4)
 
 
+def logger_config(level=logging.INFO):
+  """
+  Customize root logger according to format intended
+  Parameters
+  __________
+  level: logging.LEVEL
+    just limited to INFO and DEBUG for now
+  """
+  logging.basicConfig(
+    level=level, 
+    format='%(asctime)s.%(msecs)03d - %(name)s - %(module)s - %(levelname)s - %(message)s', 
+    datefmt='%Y-%m-%d,%H:%M:%S'
+  )
+
+
 def main():
   
   parser = argparse.ArgumentParser(description='AWS ECR docker image cross-region replicator.')
@@ -175,7 +190,7 @@ def main():
   
   args = parser.parse_args()
   
-  logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO, format='%(asctime)s.%(msecs)03d - %(name)s - %(module)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d,%H:%M:%S')
+  logger_config(level=logging.DEBUG if args.verbose else logging.INFO)
 
   auth_data_source = get_auth_data(args.source)
   auth_data_target = get_auth_data(args.dest)
