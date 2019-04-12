@@ -54,6 +54,7 @@ python3 -m ecr2ecr.core -s us-west-2 -d us-east-1 -n image-name -t latest
 * -d --destination-region region where the image will be pushed to.
 * -n --image-name         image:tag format
 * -t --image-tag          image:tag format
+* -v --verbose            switch to enable verbose logging level
 
 ## Author
 
